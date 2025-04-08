@@ -6,7 +6,12 @@ import structlog
 from alcatraz.clusters.local import LocalConfig
 from paperbench.constants import AGENT_DIR, SUBMISSION_DIR, WORKSPACE_BASE
 from paperbench.metrics import EvaluationRun, PaperEvaluation
-from paperbench.utils import get_default_runs_dir, get_experiments_dir
+from paperbench.utils import (
+    get_default_runs_dir,
+    get_experiments_dir,
+    get_paperbench_data_dir,
+    is_docker_running,
+)
 
 
 def get_split_to_expected_papers() -> dict[str, int]:
@@ -229,3 +234,19 @@ def filter_processor(logger, method_name, event_dict):
         raise structlog.DropEvent()
 
     return event_dict
+
+
+def run_sanity_checks(paperbench: "PaperBench"):
+    if uses_local_config(paperbench):
+        assert is_docker_running(), (
+            "Docker is not running, but a local config requested."
+            " Please ensure Docker is running if you wish to use `LocalConfig` for any of the `cluster_config`s."
+        )
+
+    # Check dataset has been pulled from git lfs
+    papers_dir = get_paperbench_data_dir() / "papers"
+    papers = [i for i in papers_dir.glob("**/paper.md")]
+
+    for paper in papers:
+        with open(paper, "r") as f:
+            assert len(f.readlines()) > 5, f"Paper at {paper} should be pulled from git lfs"
