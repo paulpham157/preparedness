@@ -47,6 +47,9 @@ command, below.
 Note, if you do not want to skip pushing the images, then you should remove the
 `--skip-push` argument and provide a `--registry` argument.
 
+Note, we have also already pushed the images to dockerhub,
+[link](https://hub.docker.com/orgs/swelancer/repositories)
+
 ### Environment variables
 
 There are a couple of environment variables SWELancer relies on.
@@ -66,6 +69,12 @@ the application. Usually you just need to set `OPENAI_API_KEY` or
 `OPENROUTER_API_KEY` to use the OpenAI or OpenRouter API, respectively.
 
 ## Running SWELancer
+
+> Note: SWELancer is designed to run with internet disabled. At the moment,
+> this is only supported on Linux systems, as it relies on `iptables`. To run
+> SWELancer on MacOS, you will need to enable internet access. Simply add the
+> `swelancer.disable_internet=False` argument to any of the run commands below.
+> Note that running swelancer with internet enabled is not well tested.
 
 We've implemented a [DummySolver](swelancer/solvers/dummy/solver.py) which can
 be used to verify that the evaluation works as intended:
@@ -89,7 +98,9 @@ uv run python swelancer/run_swelancer.py \
   swelancer.solver.apply_gold_solution=True \
   swelancer.solver.computer_runtime=nanoeval_alcatraz.alcatraz_computer_interface:AlcatrazComputerRuntime \
   swelancer.solver.computer_runtime.env=alcatraz.clusters.local:LocalConfig \
-  swelancer.solver.computer_runtime.env.pull_from_registry=False \
+  swelancer.solver.computer_runtime.env.pull_from_registry=True \
+  swelancer.docker_image_prefix=swelancer/swelancer_x86 \
+  swelancer.docker_image_tag=releasev1 \
   runner.concurrency=20 \
   runner.experimental_use_multiprocessing=False \
   runner.enable_slackbot=False \
@@ -109,7 +120,9 @@ uv run python swelancer/run_swelancer.py \
   swelancer.solver.apply_gold_solution=True \
   swelancer.solver.computer_runtime=nanoeval_alcatraz.alcatraz_computer_interface:AlcatrazComputerRuntime \
   swelancer.solver.computer_runtime.env=alcatraz.clusters.local:LocalConfig \
-  swelancer.solver.computer_runtime.env.pull_from_registry=False \
+  swelancer.solver.computer_runtime.env.pull_from_registry=True \
+  swelancer.docker_image_prefix=swelancer/swelancer_x86 \
+  swelancer.docker_image_tag=releasev1 \
   runner.concurrency=20 \
   runner.experimental_use_multiprocessing=False \
   runner.enable_slackbot=False \
@@ -138,7 +151,9 @@ uv run python swelancer/run_swelancer.py \
   swelancer.solver.model=openai/gpt-4o \
   swelancer.solver.computer_runtime=nanoeval_alcatraz.alcatraz_computer_interface:AlcatrazComputerRuntime \
   swelancer.solver.computer_runtime.env=alcatraz.clusters.local:LocalConfig \
-  swelancer.solver.computer_runtime.env.pull_from_registry=False
+  swelancer.solver.computer_runtime.env.pull_from_registry=True \
+  swelancer.docker_image_prefix=swelancer/swelancer_x86 \
+  swelancer.docker_image_tag=releasev1 \
   runner.concurrency=4 \
   runner.experimental_use_multiprocessing=False \
   runner.enable_slackbot=False \
