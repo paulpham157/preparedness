@@ -13,14 +13,14 @@ IPython
 jupyter-client
 libcst==1.5.1
 loky
-lxml==5.3.0
+lxml==6.1.0
 mitmproxy==11.0.2
 moviepy==2.1.1
 numpy==2.2.1
 openai
 pandas
 playwright==1.47.0
-pillow<11.0.0
+pillow<13.0.0
 pipx==1.7.1
 psutil
 pyarrow
@@ -32,7 +32,7 @@ pyyaml
 pypdf==5.1.0
 pusher==3.3.2
 reportlab==4.2.5
-requests==2.32.3
+requests==2.33.0
 requests_toolbelt==1.0.0
 service-identity
 structlog
